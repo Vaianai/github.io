@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack Multiplayer Istituzionale</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <header class="app-header">
+        <h1>Blackjack Multiplayer Istituzionale</h1>
+        <div id="auth-status" class="auth-status">Accesso richiesto</div>
+    </header>
+
+    <main>
+        <section class="auth-panel" id="auth-panel">
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="google-signin" id="google-signin"></div>
+            <p class="auth-instructions">
+                Accedi con il tuo account Google istituzionale (es. nome.cognome@istituto.edu) per entrare al tavolo.
+            </p>
+            <p class="auth-warning" id="auth-warning" role="alert"></p>
+        </section>
+
+        <section class="table-layout" id="table-layout" hidden>
+            <div class="table-and-controls">
+                <div class="table" aria-live="polite">
+                    <div class="dealer-area">
+                        <h2>Dealer</h2>
+                        <div class="hand" id="dealer-hand"></div>
+                        <div class="hand-value" id="dealer-value">Valore: 0</div>
+                    </div>
+                    <div class="players-area" id="players-area"></div>
+                </div>
+
+                <div class="controls">
+                    <button id="add-player">Aggiungi giocatore</button>
+                    <button id="start-round" disabled>Inizia mano</button>
+                    <button id="hit-button" disabled>Pesca carta</button>
+                    <button id="stand-button" disabled>Stai</button>
+                    <button id="reset-table">Reset tavolo</button>
+                </div>
+            </div>
+
+            <aside class="leaderboard" aria-live="polite">
+                <h2>Classifica</h2>
+                <ol id="leaderboard-list"></ol>
+                <div class="money-ticker" id="money-ticker">$0 generati nell'ultimo minuto</div>
+            </aside>
+        </section>
+    </main>
+
+    <template id="player-template">
+        <div class="player" data-player-id="">
+            <h3 class="player-name"></h3>
+            <div class="hand"></div>
+            <div class="hand-value">Valore: 0</div>
+            <div class="player-status"></div>
+        </div>
+    </template>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
