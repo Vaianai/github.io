@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GambleX - Play & Win</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <h1>GambleX</h1>
+        <p class="tagline">Play responsibly. Win big. Enjoy the experience.</p>
+      </header>
+
+      <main>
+        <section class="auth" id="auth-section">
+          <div class="card">
+            <h2>Join the action</h2>
+            <form id="register-form">
+              <h3>Create account</h3>
+              <label>
+                Username
+                <input type="text" name="username" placeholder="Your username" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Password" required />
+              </label>
+              <button type="submit">Register</button>
+            </form>
+
+            <form id="login-form">
+              <h3>Already have an account?</h3>
+              <label>
+                Username
+                <input type="text" name="username" placeholder="Your username" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Password" required />
+              </label>
+              <button type="submit">Log in</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="dashboard hidden" id="dashboard">
+          <nav class="top-bar">
+            <div class="user-info">
+              <h2 id="user-name"></h2>
+              <div class="stats">
+                <span>Balance: <strong id="user-balance">0</strong></span>
+                <span>Level: <strong id="user-level">1</strong></span>
+                <span>XP: <strong id="user-xp">0</strong></span>
+              </div>
+            </div>
+            <div class="controls">
+              <button id="daily-bonus">Claim Daily Bonus</button>
+              <button id="logout-btn">Log out</button>
+            </div>
+          </nav>
+
+          <section class="wallet">
+            <div class="card">
+              <h2>Wallet</h2>
+              <div class="wallet-grid">
+                <form id="deposit-form">
+                  <h3>Deposit</h3>
+                  <label>
+                    Amount
+                    <input type="number" name="amount" step="0.01" min="1" required />
+                  </label>
+                  <label>
+                    Description
+                    <input type="text" name="description" placeholder="Optional note" />
+                  </label>
+                  <button type="submit">Deposit funds</button>
+                </form>
+
+                <form id="withdraw-form">
+                  <h3>Withdraw</h3>
+                  <label>
+                    Amount
+                    <input type="number" name="amount" step="0.01" min="1" required />
+                  </label>
+                  <label>
+                    Description
+                    <input type="text" name="description" placeholder="Optional note" />
+                  </label>
+                  <button type="submit">Request withdrawal</button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section class="games">
+            <div class="card">
+              <h2>Games</h2>
+              <div class="games-grid">
+                <div class="game" data-game="blackjack">
+                  <h3>Blackjack</h3>
+                  <p>Classic 21. Beat the dealer to win!</p>
+                  <form class="game-form">
+                    <label>
+                      Bet amount
+                      <input type="number" name="bet" min="1" step="0.01" required />
+                    </label>
+                    <button type="submit">Play Blackjack</button>
+                  </form>
+                  <div class="result"></div>
+                </div>
+
+                <div class="game" data-game="crash">
+                  <h3>Crash</h3>
+                  <p>Set your cash out and hope the rocket doesn't crash!</p>
+                  <form class="game-form">
+                    <label>
+                      Bet amount
+                      <input type="number" name="bet" min="1" step="0.01" required />
+                    </label>
+                    <label>
+                      Auto cash out
+                      <input type="number" name="autoCashOut" min="1" step="0.1" value="2" />
+                    </label>
+                    <button type="submit">Launch rocket</button>
+                  </form>
+                  <div class="result"></div>
+                </div>
+
+                <div class="game" data-game="keno">
+                  <h3>Keno</h3>
+                  <p>Pick up to 10 numbers (1-80). More hits, more wins.</p>
+                  <form class="game-form">
+                    <label>
+                      Bet amount
+                      <input type="number" name="bet" min="1" step="0.01" required />
+                    </label>
+                    <label>
+                      Numbers (comma separated)
+                      <input type="text" name="numbers" placeholder="1, 7, 15, 22" />
+                    </label>
+                    <button type="submit">Draw numbers</button>
+                  </form>
+                  <div class="result"></div>
+                </div>
+
+                <div class="game" data-game="plinko">
+                  <h3>Plinko</h3>
+                  <p>Drop the ball and hope for the best slot.</p>
+                  <form class="game-form">
+                    <label>
+                      Bet amount
+                      <input type="number" name="bet" min="1" step="0.01" required />
+                    </label>
+                    <label>
+                      Risk level
+                      <select name="risk">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </label>
+                    <button type="submit">Drop ball</button>
+                  </form>
+                  <div class="result"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="history-grid">
+            <div class="card" id="transaction-card">
+              <h2>Recent transactions</h2>
+              <ul id="transaction-list"></ul>
+            </div>
+            <div class="card" id="rewards-card">
+              <h2>Rewards</h2>
+              <ul id="rewards-list"></ul>
+            </div>
+            <div class="card chat-card">
+              <h2>Live chat</h2>
+              <div id="chat-window"></div>
+              <form id="chat-form">
+                <input type="text" id="chat-input" placeholder="Say something" maxlength="200" />
+                <button type="submit">Send</button>
+              </form>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer>
+        <p>Gamble responsibly. Ensure you meet your local jurisdiction's requirements.</p>
+      </footer>
+    </div>
+  </body>
+</html>
